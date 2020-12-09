@@ -53,6 +53,8 @@ int    iframe = 0;
 float  tmax = win_width / (SCALE*NPN);
 float  dmax = SCALE / win_width;
 unsigned char *pixels;
+// choose colormaps
+int choose_colormaps = 1;
 
 #define DM  ((float) (1.0/(100-1.0)))
 
@@ -183,7 +185,7 @@ int main(int argc, char* argv[])
 {
 	/*load mesh from ply file*/
 	//FILE* this_file = fopen("../quadmesh_2D/vector_data/saddle.ply", "r");
-	FILE* this_file = fopen("../quadmesh_2D/scalar_data/sin_function.ply", "r");
+	FILE* this_file = fopen("../quadmesh_2D/new_vector_data_2/v3.ply", "r");
 
 	poly = new Polyhedron(this_file);
 	fclose(this_file);
@@ -205,7 +207,7 @@ int main(int argc, char* argv[])
 	init();
 
 	/*prepare the noise texture for IBFV*/
-	makePatterns();
+	//makePatterns();
 	
 	/*the render function and callback registration*/
 	glutKeyboardFunc(keyboard);
@@ -710,7 +712,8 @@ void makePatterns(void)
 	GLubyte pat[NPN][NPN][4];
 	int i, j, k, t;
 
-	for (i = 0; i < 256; i++) lut[i] = i < 127 ? 0 : 255;
+	
+	for (i = 0; i < 256; i++) lut[i] = i ;
 	for (i = 0; i < NPN; i++)
 		for (j = 0; j < NPN; j++) phase[i][j] = rand() % 256;
 
@@ -718,11 +721,215 @@ void makePatterns(void)
 		t = k * 256 / Npat;
 		for (i = 0; i < NPN; i++)
 			for (j = 0; j < NPN; j++) {
-				pat[i][j][0] =
-					pat[i][j][1] =
-					pat[i][j][2] = lut[(t + phase[i][j]) % 255];
-				pat[i][j][3] = int(0.12 * 255);
+			//Colormap: RA: Rainbow
+			if(choose_colormaps == 1){
+				if(j <=(NPN * 1 /6)){
+					pat[i][j][0] = 0;
+					pat[i][j][1] = 0;
+					pat[i][j][2] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				 if((NPN * 1 /6) < j && j <=(NPN * 2 /6)){
+					 pat[i][j][0] = 0;
+				 	pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+				 	pat[i][j][2] = 255 - lut[(t + phase[i][j]) % 255];
+				 	pat[i][j][3] = int(0.12 * 255);
+				 }
+				if((NPN * 2 /6) < j && j <=(NPN * 3 /6)){
+					pat[i][j][0] = 0;
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 3 /6) < j && j <=(NPN * 4 /6)){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 4 /6) < j && j <=(NPN * 5 /6)){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 165 - lut[(t + phase[i][j]) % 165];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 5 /6) < j){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 0;
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
 			}
+
+			//Colormap: GP: grey
+			if(choose_colormaps == 2){
+				if(j <=(NPN * 1 /3)){
+					pat[i][j][0] = 
+					pat[i][j][1] = 
+					pat[i][j][2] = 50 - lut[(t + phase[i][j]) % 50];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				 if((NPN * 1 /3) < j && j <=(NPN * 2 /3)){
+					 pat[i][j][0] = 192 - lut[(t + phase[i][j]) % 192];
+					 pat[i][j][1] = 192 - lut[(t + phase[i][j]) % 192];
+					 pat[i][j][2] = 192 - lut[(t + phase[i][j]) % 192];
+					 pat[i][j][3] = int(0.12 * 255);
+				 }
+				if((NPN * 2 /3) < j ){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+			}
+			
+			//Colormap: RA: Rainbow
+			if(choose_colormaps == 3){
+				
+				if(j <=(NPN * 1 /5)){
+					pat[i][j][0] = 0;
+					pat[i][j][1] = 0;
+					pat[i][j][2] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				 if((NPN * 1 /5) < j && j <=(NPN * 2 /5)){
+					 pat[i][j][0] = 0;
+					 pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					 pat[i][j][2] = 255 - lut[(t + phase[i][j]) % 255];
+					 pat[i][j][3] = int(0.12 * 255);
+				 }
+				if((NPN * 2 /5) < j && j <=(NPN * 3 /5)){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 3 /5) < j && j <=(NPN * 4 /5)){
+					pat[i][j][0] = 250 - lut[(t + phase[i][j]) % 250];
+					pat[i][j][1] = 128 - lut[(t + phase[i][j]) % 128];
+					pat[i][j][2] = 114 - lut[(t + phase[i][j]) % 114];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 4 /5) < j){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 0;
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+			}
+
+			//Colormap: GR: Green-Red
+			if(choose_colormaps == 4){
+				
+				if(j <=(NPN * 1 /5)){
+					pat[i][j][0] = 0;
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				 if((NPN * 1 /5) < j && j <=(NPN * 2 /5)){
+					 pat[i][j][0] = 107 - lut[(t + phase[i][j]) % 107];
+					 pat[i][j][1] = 142 - lut[(t + phase[i][j]) % 142];
+					 pat[i][j][2] = 35 - lut[(t + phase[i][j]) % 35];
+					 pat[i][j][3] = int(0.12 * 255);
+				 }
+				if((NPN * 2 /5) < j && j <=(NPN * 3 /5)){
+					pat[i][j][0] = 210 - lut[(t + phase[i][j]) % 210];
+					pat[i][j][1] = 105 - lut[(t + phase[i][j]) % 105];
+					pat[i][j][2] = 30 - lut[(t + phase[i][j]) % 30];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 3 /5) < j && j <=(NPN * 4 /5)){
+					pat[i][j][0] = 250 - lut[(t + phase[i][j]) % 250];
+					pat[i][j][1] = 97 - lut[(t + phase[i][j]) % 97];
+					pat[i][j][2] = 3 - lut[(t + phase[i][j]) % 3];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 4 /5) < j){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 0;
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+			}
+
+			//Colormap: GR: Green-Red
+			if(choose_colormaps == 4){
+				
+				if(j <=(NPN * 1 /5)){
+					pat[i][j][0] = 0;
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				 if((NPN * 1 /5) < j && j <=(NPN * 2 /5)){
+					 pat[i][j][0] = 107 - lut[(t + phase[i][j]) % 107];
+					 pat[i][j][1] = 142 - lut[(t + phase[i][j]) % 142];
+					 pat[i][j][2] = 35 - lut[(t + phase[i][j]) % 35];
+					 pat[i][j][3] = int(0.12 * 255);
+				 }
+				if((NPN * 2 /5) < j && j <=(NPN * 3 /5)){
+					pat[i][j][0] = 210 - lut[(t + phase[i][j]) % 210];
+					pat[i][j][1] = 105 - lut[(t + phase[i][j]) % 105];
+					pat[i][j][2] = 30 - lut[(t + phase[i][j]) % 30];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 3 /5) < j && j <=(NPN * 4 /5)){
+					pat[i][j][0] = 250 - lut[(t + phase[i][j]) % 250];
+					pat[i][j][1] = 97 - lut[(t + phase[i][j]) % 97];
+					pat[i][j][2] = 3 - lut[(t + phase[i][j]) % 3];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 4 /5) < j){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 0;
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+			}
+
+			//Colormap: VI: Viridis colormap
+			if(choose_colormaps == 5){
+				if(j <=(NPN * 1 /6)){
+					pat[i][j][0] = 138 - lut[(t + phase[i][j]) % 138];
+					pat[i][j][1] = 43 - lut[(t + phase[i][j]) % 43];
+					pat[i][j][2] = 226 - lut[(t + phase[i][j]) % 226];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				 if((NPN * 1 /6) < j && j <=(NPN * 2 /6)){
+					pat[i][j][0] = 65 - lut[(t + phase[i][j]) % 65];
+				 	pat[i][j][1] = 105 - lut[(t + phase[i][j]) % 105];
+				 	pat[i][j][2] = 225 - lut[(t + phase[i][j]) % 225];
+				 	pat[i][j][3] = int(0.12 * 255);
+				 }
+				if((NPN * 2 /6) < j && j <=(NPN * 3 /6)){
+					pat[i][j][0] = 3 - lut[(t + phase[i][j]) % 3];
+					pat[i][j][1] = 168 - lut[(t + phase[i][j]) % 168];
+					pat[i][j][2] = 158 - lut[(t + phase[i][j]) % 158];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 3 /6) < j && j <=(NPN * 4 /6)){
+					pat[i][j][0] = 61 - lut[(t + phase[i][j]) % 61];
+					pat[i][j][1] = 145 - lut[(t + phase[i][j]) % 145];
+					pat[i][j][2] = 64 - lut[(t + phase[i][j]) % 64];
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 4 /6) < j && j <=(NPN * 5 /6)){
+					pat[i][j][0] = 127 - lut[(t + phase[i][j]) % 127];
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+				if((NPN * 5 /6) < j){
+					pat[i][j][0] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
+					pat[i][j][2] = 0;
+					pat[i][j][3] = int(0.12 * 255);
+				}
+			}
+
+			}
+		//glColorMask(1, 1, 0, 0.1);
 		glNewList(k + 1, GL_COMPILE);
 		glTexImage2D(GL_TEXTURE_2D, 0, 4, NPN, NPN, 0, GL_RGBA, GL_UNSIGNED_BYTE, pat);
 		glEndList();
@@ -978,6 +1185,30 @@ void keyboard(unsigned char key, int x, int y) {
 
 	case '5':
 		display_mode = 5;
+		int input;
+
+		
+   		int str_input;
+	
+		printf( "Please enter the number of the Colormap:\n");
+		printf( "(1) RA\n(2) GP\n(3) CW\n(4) GR\n(5) VI\n->");
+   		scanf("%d", &input);
+ 
+   		printf( "\nYou entered: %d  ", input);
+   		printf("\n\n");
+
+		if( input == 1){ str_input = 1;}
+		else if( input == 2){ str_input = 2;}
+		else if( input == 3){ str_input = 3;}
+		else if( input == 4){ str_input = 4;}
+		else if( input == 5){ str_input = 5;}
+		else{
+		str_input = 1;
+		printf("The number is not from 1 to 5, showing the (1) RA\n");
+	}
+		choose_colormaps = str_input;
+
+		makePatterns();
 		//show the IBFV of the field
 		break;
 
@@ -988,6 +1219,9 @@ void keyboard(unsigned char key, int x, int y) {
 		zoom = 1.0;
 		glutPostRedisplay();
 		break;
+
+	
+
 	}
 }
 
