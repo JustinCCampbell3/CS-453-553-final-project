@@ -1269,11 +1269,20 @@ void keyboard(unsigned char key, int x, int y) {
 					max = scalar;
 				}
 			}
-
 			int color = 11 + poly->nverts/2;
 
-			int cmap = 2;
+			int input;
 
+			printf("Please enter the number of the Colormap:\n");
+			printf("(1) CW\n(2) GP\n(3) GR\n(4) RA\n->");
+			scanf("%d", &input);
+
+			printf("\nYou entered: %d  ", input);
+			printf("\n\n");
+
+			int cmap = input;
+
+			//Cool Warm(CW) Colormap
 			if (cmap == 1) {
 				for (int i = 0; i < poly->nverts; i++) {
 					Vertex* temp_v = poly->vlist[i];
@@ -1296,19 +1305,74 @@ void keyboard(unsigned char key, int x, int y) {
 				}
 			}
 
-			//GP colormap
+			//Grey scale(GP) colormap
 			if (cmap == 2) {
 				for (int i = 0; i < poly->nverts; i++) {
 					Vertex* temp_v = poly->vlist[i];
 					double scalar = temp_v->scalar; //f(v)
-					//temp_v->R = ...;
-					//temp_v->G = ...;
-					//temp_v->B = ...;
+							//temp_v->R = ...;
+							//temp_v->G = ...;
+							//temp_v->B = ...;
 
 					temp_v->R = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
 					temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
 					temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1-(i*.0025)) * ((max - scalar) / (max - min)));
 
+
+
+				}
+			}
+
+			//Green Red(GR) colormap
+			if (cmap == 3) {
+				for (int i = 0; i < poly->nverts; i++) {
+					Vertex* temp_v = poly->vlist[i];
+					double scalar = temp_v->scalar; //f(v)
+							//temp_v->R = ...;
+							//temp_v->G = ...;
+							//temp_v->B = ...;
+
+					temp_v->R = (1 * ((scalar - min) / (max - min))) + ((.3 + (i * .0025)) * ((max - scalar) / (max - min)));
+					temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .0025)) * ((max - scalar) / (max - min)));
+					temp_v->B = (1 * ((scalar - min) / (max - min))) + (.1 * ((max - scalar) / (max - min)));
+
+
+
+				}
+			}
+
+			// Rainbow (RA) colormap
+			if (cmap == 4) {
+				for (int i = 0; i < poly->nverts; i++) {
+					Vertex* temp_v = poly->vlist[i];
+					double scalar = temp_v->scalar; //f(v)
+							//temp_v->R = ...;
+							//temp_v->G = ...;
+							//temp_v->B = ...;
+
+					if (i < color) {
+						temp_v->R = (1 * ((scalar - min) / (max - min))) + ((0) * ((max - scalar) / (max - min)));
+						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((0 + (i * .005)) * ((max - scalar) / (max - min)));
+						temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .005)) * ((max - scalar) / (max - min)));
+					}
+					else if(i < color + 42) {
+						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .00002)) * ((max - scalar) / (max - min)));
+						temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
+
+					}
+					else if(i< color + 82) {
+						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .0018)) * ((max - scalar) / (max - min)));
+						temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
+
+					}
+					else {
+						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((.8 - (i * .0018)) * ((max - scalar) / (max - min)));
+						temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
+
+					}
 
 
 				}
