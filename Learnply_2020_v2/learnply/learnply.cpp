@@ -1284,98 +1284,197 @@ void keyboard(unsigned char key, int x, int y) {
 
 			//Cool Warm(CW) Colormap
 			if (cmap == 1) {
-				for (int i = 0; i < poly->nverts; i++) {
-					Vertex* temp_v = poly->vlist[i];
-					double scalar = temp_v->scalar; //f(v)
-					//temp_v->R = ...;
-					//temp_v->G = ...;
-					//temp_v->B = ...;
-					if (i < color) {
-						temp_v->R = (1 * ((scalar - min) / (max - min))) + ((i * .005) * ((max - scalar) / (max - min)));
-						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((i * .005) * ((max - scalar) / (max - min)));
-						temp_v->B = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
-					}
-					else {
-						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
-						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .001)) * ((max - scalar) / (max - min)));
-						temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .001)) * ((max - scalar) / (max - min)));
+				// for (int i = 0; i < poly->nverts; i++) {
+				// 	Vertex* temp_v = poly->vlist[i];
+				// 	double scalar = temp_v->scalar; //f(v)
+				// 	//temp_v->R = ...;
+				// 	//temp_v->G = ...;
+				// 	//temp_v->B = ...;
+				// 	if (i < color) {
+				// 		temp_v->R = (1 * ((scalar - min) / (max - min))) + ((i * .005) * ((max - scalar) / (max - min)));
+				// 		temp_v->G = (1 * ((scalar - min) / (max - min))) + ((i * .005) * ((max - scalar) / (max - min)));
+				// 		temp_v->B = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+				// 	}
+				// 	else {
+				// 		temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+				// 		temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .001)) * ((max - scalar) / (max - min)));
+				// 		temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .001)) * ((max - scalar) / (max - min)));
 
-					}
+				// 	}
 
-				}
+				// }
+				for (int i = 0; i < poly->nquads; i++){
+					Quad* temp_q = poly->qlist[i];
+					for (int j = 0; j < 4; j++) {
+
+						Vertex* temp_v = temp_q->verts[j];
+						double scalar = temp_v->scalar;
+						if (temp_v->x < 0) {
+							temp_v->R = 1 + temp_v->x / 10;
+							temp_v->G = 1 + temp_v->x / 10;
+							temp_v->B = 1;
+						}else if (0 < temp_v->x ){
+							temp_v->R = 1;
+							temp_v->G = 1 - temp_v->x / 10;
+							temp_v->B = 1 - temp_v->x / 10;
+
+				        }else if (temp_v->x == 0){
+							temp_v->R = 1;
+							temp_v->G = 1;
+							temp_v->B = 1;
+
+						}
+
+				    }
+
+			    }
 			}
 
 			//Grey scale(GP) colormap
 			if (cmap == 2) {
-				for (int i = 0; i < poly->nverts; i++) {
-					Vertex* temp_v = poly->vlist[i];
-					double scalar = temp_v->scalar; //f(v)
-							//temp_v->R = ...;
-							//temp_v->G = ...;
-							//temp_v->B = ...;
+				// for (int i = 0; i < poly->nverts; i++) {
+				// 	Vertex* temp_v = poly->vlist[i];
+				// 	double scalar = temp_v->scalar; //f(v)
+				// 			//temp_v->R = ...;
+				// 			//temp_v->G = ...;
+				// 			//temp_v->B = ...;
 
-					temp_v->R = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
-					temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
-					temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1-(i*.0025)) * ((max - scalar) / (max - min)));
+				// 	temp_v->R = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
+				// 	temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
+				// 	temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1-(i*.0025)) * ((max - scalar) / (max - min)));
+
+				// }
+
+				for (int i = 0; i < poly->nquads; i++){
+					Quad* temp_q = poly->qlist[i];
+					for (int j = 0; j < 4; j++) {
+
+						Vertex* temp_v = temp_q->verts[j];
+						double scalar = temp_v->scalar;
+						
+							temp_v->R = 0.5 + temp_v->x / 20;
+							temp_v->G = 0.5 + temp_v->x / 20;
+							temp_v->B = 0.5 + temp_v->x / 20;
+					}
+
+			    }
 
 
-
-				}
 			}
 
 			//Green Red(GR) colormap
 			if (cmap == 3) {
-				for (int i = 0; i < poly->nverts; i++) {
-					Vertex* temp_v = poly->vlist[i];
-					double scalar = temp_v->scalar; //f(v)
-							//temp_v->R = ...;
-							//temp_v->G = ...;
-							//temp_v->B = ...;
+				// for (int i = 0; i < poly->nverts; i++) {
+				// 	Vertex* temp_v = poly->vlist[i];
+				// 	double scalar = temp_v->scalar; //f(v)
+				// 			//temp_v->R = ...;
+				// 			//temp_v->G = ...;
+				// 			//temp_v->B = ...;
 
-					temp_v->R = (1 * ((scalar - min) / (max - min))) + ((.3 + (i * .0025)) * ((max - scalar) / (max - min)));
-					temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .0025)) * ((max - scalar) / (max - min)));
-					temp_v->B = (1 * ((scalar - min) / (max - min))) + (.1 * ((max - scalar) / (max - min)));
+				// 	temp_v->R = (1 * ((scalar - min) / (max - min))) + ((.3 + (i * .0025)) * ((max - scalar) / (max - min)));
+				// 	temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .0025)) * ((max - scalar) / (max - min)));
+				// 	temp_v->B = (1 * ((scalar - min) / (max - min))) + (.1 * ((max - scalar) / (max - min)));
 
 
 
-				}
+				// }
+
+				for (int i = 0; i < poly->nquads; i++){
+					Quad* temp_q = poly->qlist[i];
+					for (int j = 0; j < 4; j++) {
+
+						Vertex* temp_v = temp_q->verts[j];
+						double scalar = temp_v->scalar;
+						if (temp_v->x < -3) {
+							temp_v->R = 0;
+							temp_v->G = 1 + temp_v->x / 10;
+							temp_v->B = 0;
+						}else if (3 < temp_v->x ){
+							temp_v->R = temp_v->x / 10;
+							temp_v->G = 0;
+							temp_v->B = 0;
+
+				        }else if (-3 <= temp_v->x <= 3){
+							temp_v->R = 0.5 + temp_v->x / 10;
+							temp_v->G = 0.5 - temp_v->x / 10;
+							temp_v->B = 0;
+
+						}
+
+				    }
+
+			    }
 			}
 
 			// Rainbow (RA) colormap
 			if (cmap == 4) {
-				for (int i = 0; i < poly->nverts; i++) {
-					Vertex* temp_v = poly->vlist[i];
-					double scalar = temp_v->scalar; //f(v)
-							//temp_v->R = ...;
-							//temp_v->G = ...;
-							//temp_v->B = ...;
+				// for (int i = 0; i < poly->nverts; i++) {
+				// 	Vertex* temp_v = poly->vlist[i];
+				// 	double scalar = temp_v->scalar; //f(v)
+				// 			//temp_v->R = ...;
+				// 			//temp_v->G = ...;
+				// 			//temp_v->B = ...;
 
-					if (i < color) {
-						temp_v->R = (1 * ((scalar - min) / (max - min))) + ((0) * ((max - scalar) / (max - min)));
-						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((0 + (i * .005)) * ((max - scalar) / (max - min)));
-						temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .005)) * ((max - scalar) / (max - min)));
-					}
-					else if(i < color + 42) {
-						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
-						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .00002)) * ((max - scalar) / (max - min)));
-						temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
+				// 	if (i < color) {
+				// 		temp_v->R = (1 * ((scalar - min) / (max - min))) + ((0) * ((max - scalar) / (max - min)));
+				// 		temp_v->G = (1 * ((scalar - min) / (max - min))) + ((0 + (i * .005)) * ((max - scalar) / (max - min)));
+				// 		temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .005)) * ((max - scalar) / (max - min)));
+				// 	}
+				// 	else if(i < color + 42) {
+				// 		temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+				// 		temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .00002)) * ((max - scalar) / (max - min)));
+				// 		temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
 
-					}
-					else if(i< color + 82) {
-						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
-						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .0018)) * ((max - scalar) / (max - min)));
-						temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
+				// 	}
+				// 	else if(i< color + 82) {
+				// 		temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+				// 		temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .0018)) * ((max - scalar) / (max - min)));
+				// 		temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
 
-					}
-					else {
-						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
-						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((.8 - (i * .0018)) * ((max - scalar) / (max - min)));
-						temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
+				// 	}
+				// 	else {
+				// 		temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+				// 		temp_v->G = (1 * ((scalar - min) / (max - min))) + ((.8 - (i * .0018)) * ((max - scalar) / (max - min)));
+				// 		temp_v->B = (1 * ((scalar - min) / (max - min))) + (0 * ((max - scalar) / (max - min)));
 
-					}
+				// 	}
 
 
-				}
+				// }
+
+
+
+			for (int i = 0; i < poly->nquads; i++){
+					Quad* temp_q = poly->qlist[i];
+					for (int j = 0; j < 4; j++) {
+
+						Vertex* temp_v = temp_q->verts[j];
+						double scalar = temp_v->scalar;
+						if (temp_v->x < -5) {
+							temp_v->R = 0;
+							temp_v->G = 1 + temp_v->x / 10;
+							temp_v->B = 1;
+						}else if (temp_v->x < 0){
+							temp_v->R = 0;
+							temp_v->G = 1;
+							temp_v->B =  -temp_v->x / 5;
+
+				        }else if (temp_v->x < 6){
+							temp_v->R = temp_v->x / 4;
+							temp_v->G = 1;
+							temp_v->B = 0;
+
+						}else if (temp_v->x <= 10){
+							temp_v->R = 1;
+							temp_v->G = 1-temp_v->x / 10 ;
+							temp_v->B = 0;
+
+						}
+
+				    }
+
+			    }
+				
 			}
 
 			display();
@@ -1490,7 +1589,7 @@ void display_polyhedron(Polyhedron* poly)
 
 		//draw a dot at position of vlist[110]
 		//with radius 0.2 in color magenta (1.0, 0.0, 1.0)
-		Vertex *v = poly->vlist[110];
+		Vertex* v = poly->vlist[110];
 		drawDot(v->x, v->y, v->z, 0.2, 1.0, 0.0, 1.0);
 
 		//draw line segment start at vlist[110] and end at (vlist[135]->x, vlist[135]->y, 4)
@@ -1518,10 +1617,10 @@ void display_polyhedron(Polyhedron* poly)
 	break;
 
 	case 5:
-	    glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHTING);
 		displayIBFV();
 		break;
-	}
+
 
 	case 6:
 	{
@@ -1544,4 +1643,5 @@ void display_polyhedron(Polyhedron* poly)
 	break;
 
 	}
+
 }
