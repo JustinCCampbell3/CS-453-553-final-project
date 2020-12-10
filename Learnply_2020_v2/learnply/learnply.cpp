@@ -27,10 +27,10 @@ int win_height = 800;
 float aspectRatio = win_width / win_height;
 /*
 Use keys 1 to 0 to switch among different display modes.
-Each display mode can be designed to show one type 
+Each display mode can be designed to show one type
 visualization result.
 
-Predefined ones: 
+Predefined ones:
 display mode 1: solid rendering
 display mode 2: show wireframes
 display mode 3: render each quad with colors of vertices
@@ -87,7 +87,7 @@ void display_polyhedron(Polyhedron* poly);
 /*
 draw a sphere
 x, y, z are the coordiate of the dot
-radius of the sphere 
+radius of the sphere
 R: the red channel of the color, ranges [0, 1]
 G: the green channel of the color, ranges [0, 1]
 B: the blue channel of the color, ranges [0, 1]
@@ -157,7 +157,7 @@ G: the green channel of the color, ranges [0, 1]
 B: the blue channel of the color, ranges [0, 1]
 */
 void drawPolyline(PolyLine pl, double width = 1.0, double R = 1.0, double G = 0.0, double B = 0.0) {
-	
+
 	glDisable(GL_LIGHTING);
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -187,11 +187,11 @@ int main(int argc, char* argv[])
 
 	char *str ="../quadmesh_2D/new_vector_data_2/";
    	char *str_input;
-	
+
 	printf( "Please enter the number of the PLY:\n");
 	printf( "(1) v1.ply\n(2) v3.ply\n(3) v4.ply\n (4) v5.ply\n (5) v6.ply\n (6) v8.ply\n (7) v9.ply\n (8) v10.ply\n (9) pattern.ply\n ->");
    	scanf("%d", &input);
- 
+
    	printf( "\nYou entered: %d  ", input);
    	printf("\n\n");
 
@@ -215,12 +215,12 @@ int main(int argc, char* argv[])
    	strcpy(n_str,str);
    	strcat(n_str,str_input);
 
-	
+
 	/*load mesh from ply file*/
 	FILE* this_file = fopen( n_str , "r");
 	poly = new Polyhedron(this_file);
 	fclose(this_file);
-	
+
 	/*initialize the mesh*/
 	poly->initialize(); // initialize the mesh
 	poly->write_info();
@@ -239,7 +239,7 @@ int main(int argc, char* argv[])
 
 	/*prepare the noise texture for IBFV*/
 	//makePatterns();
-	
+
 	/*the render function and callback registration*/
 	glutKeyboardFunc(keyboard);
 	glutReshapeFunc(reshape);
@@ -248,10 +248,10 @@ int main(int argc, char* argv[])
 	glutMotionFunc(motion);
 	glutMouseFunc(mouse);
 	glutMouseWheelFunc(mousewheel);
-	
+
 	/*event processing loop*/
 	glutMainLoop();
-	
+
 	/*clear memory before exit*/
 	poly->finalize();	// finalize everything
 	free(pixels);
@@ -355,10 +355,10 @@ void init(void) {
 	glDisable(GL_DITHER);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	
+
 	//set pixel storage modes
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-	
+
 	glEnable(GL_NORMALIZE);
 	if (poly->orientation == 0)
 		glFrontFace(GL_CW);
@@ -439,7 +439,7 @@ void display_quads(GLenum mode, Polyhedron* this_poly)
 			mat_diffuse[3] = 1.0;
 		}
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-		
+
 		glBegin(GL_POLYGON);
 		for (j = 0; j < 4; j++) {
 			Vertex* temp_v = temp_q->verts[j];
@@ -608,7 +608,7 @@ void mouse(int button, int state, int x, int y) {
 	int key = glutGetModifiers();
 
 	if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) {
-		
+
 		if (state == GLUT_DOWN) {
 			float xsize = (float)win_width;
 			float ysize = (float)win_height;
@@ -743,7 +743,7 @@ void makePatterns(void)
 	GLubyte pat[NPN][NPN][4];
 	int i, j, k, t;
 
-	
+
 	for (i = 0; i < 256; i++) lut[i] = i ;
 	for (i = 0; i < NPN; i++)
 		for (j = 0; j < NPN; j++) phase[i][j] = rand() % 256;
@@ -795,8 +795,8 @@ void makePatterns(void)
 			//Colormap: GP: grey
 			if(choose_colormaps == 2){
 				if(j <=(NPN * 1 /3)){
-					pat[i][j][0] = 
-					pat[i][j][1] = 
+					pat[i][j][0] =
+					pat[i][j][1] =
 					pat[i][j][2] = 50 - lut[(t + phase[i][j]) % 50];
 					pat[i][j][3] = int(0.12 * 255);
 				}
@@ -813,10 +813,10 @@ void makePatterns(void)
 					pat[i][j][3] = int(0.12 * 255);
 				}
 			}
-			
+
 			//Colormap: RA: Rainbow
 			if(choose_colormaps == 3){
-				
+
 				if(j <=(NPN * 1 /5)){
 					pat[i][j][0] = 0;
 					pat[i][j][1] = 0;
@@ -851,7 +851,7 @@ void makePatterns(void)
 
 			//Colormap: GR: Green-Red
 			if(choose_colormaps == 4){
-				
+
 				if(j <=(NPN * 1 /5)){
 					pat[i][j][0] = 0;
 					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
@@ -886,7 +886,7 @@ void makePatterns(void)
 
 			//Colormap: GR: Green-Red
 			if(choose_colormaps == 4){
-				
+
 				if(j <=(NPN * 1 /5)){
 					pat[i][j][0] = 0;
 					pat[i][j][1] = 255 - lut[(t + phase[i][j]) % 255];
@@ -1218,14 +1218,14 @@ void keyboard(unsigned char key, int x, int y) {
 		display_mode = 5;
 		int input;
 
-		
+
    		int str_input;
-	
+
 		printf( "Please enter the number of the Colormap:\n");
 		printf( "(1) RA\n(2) GP\n(3) CW\n(4) GR\n(5) VI\n->");
-		
+
    		scanf("%d", &input);
- 
+
    		printf( "\nYou entered: %d  ", input);
    		printf("\n\n");
 
@@ -1244,6 +1244,80 @@ void keyboard(unsigned char key, int x, int y) {
 		//show the IBFV of the field
 		break;
 
+		case '6':
+		{
+			display_mode = 6;
+			double L = (poly->radius * 2) / 30;
+			double min = poly->vlist[0]->scalar;
+			double max = poly->vlist[0]->scalar;
+			for (int i = 0; i < poly->nverts; i++) {
+				Vertex* temp_v = poly->vlist[i];
+				double scalar = temp_v->scalar;
+				//compare current scalar with min
+				//and update the min value
+				//if(...)
+				//...
+				if (scalar < min) {
+					min = scalar;
+				}
+
+				//compare current scalar with max
+				//and update the max value
+				//if(...)
+				//...
+				if (scalar > max) {
+					max = scalar;
+				}
+			}
+
+			int color = 11 + poly->nverts/2;
+
+			int cmap = 2;
+
+			if (cmap == 1) {
+				for (int i = 0; i < poly->nverts; i++) {
+					Vertex* temp_v = poly->vlist[i];
+					double scalar = temp_v->scalar; //f(v)
+					//temp_v->R = ...;
+					//temp_v->G = ...;
+					//temp_v->B = ...;
+					if (i < color) {
+						temp_v->R = (1 * ((scalar - min) / (max - min))) + ((i * .005) * ((max - scalar) / (max - min)));
+						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((i * .005) * ((max - scalar) / (max - min)));
+						temp_v->B = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+					}
+					else {
+						temp_v->R = (1 * ((scalar - min) / (max - min))) + (1 * ((max - scalar) / (max - min)));
+						temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .001)) * ((max - scalar) / (max - min)));
+						temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1 - (i * .001)) * ((max - scalar) / (max - min)));
+
+					}
+
+				}
+			}
+
+			//GP colormap
+			if (cmap == 2) {
+				for (int i = 0; i < poly->nverts; i++) {
+					Vertex* temp_v = poly->vlist[i];
+					double scalar = temp_v->scalar; //f(v)
+					//temp_v->R = ...;
+					//temp_v->G = ...;
+					//temp_v->B = ...;
+
+					temp_v->R = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
+					temp_v->G = (1 * ((scalar - min) / (max - min))) + ((1-(i * .0025)) * ((max - scalar) / (max - min)));
+					temp_v->B = (1 * ((scalar - min) / (max - min))) + ((1-(i*.0025)) * ((max - scalar) / (max - min)));
+
+
+
+				}
+			}
+
+			display();
+			break;
+		}
+
 	case 'r':
 		mat_ident(rotmat);
 		translation[0] = 0;
@@ -1252,7 +1326,7 @@ void keyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 
-	
+
 
 	}
 }
@@ -1346,7 +1420,7 @@ void display_polyhedron(Polyhedron* poly)
 
 	case 4:
 	{
-		//draw a dot at position (0.2, 0.3, 0.4) 
+		//draw a dot at position (0.2, 0.3, 0.4)
 		//with radius 0.1 in color blue(0.0, 0.0, 1.0)
 		drawDot(0.2, 0.3, 0.4, 0.1, 0.0, 0.0, 1.0);
 
@@ -1383,5 +1457,27 @@ void display_polyhedron(Polyhedron* poly)
 	    glEnable(GL_LIGHTING);
 		displayIBFV();
 		break;
+	}
+
+	case 6:
+	{
+		glDisable(GL_LIGHTING);
+		for (int i = 0; i < poly->nquads; i++) {
+			Quad* temp_q = poly->qlist[i];
+
+			glBegin(GL_POLYGON);
+			for (int j = 0; j < 4; j++) {
+				Vertex* temp_v = temp_q->verts[j];
+				glColor3f(temp_v->R, temp_v->G, temp_v->B);
+				glVertex3d(temp_v->x, temp_v->y, temp_v->z);
+			}
+			glEnd();
+
+		}
+
+		glDisable(GL_BLEND);
+	}
+	break;
+
 	}
 }
