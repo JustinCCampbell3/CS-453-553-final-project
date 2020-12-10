@@ -183,10 +183,41 @@ Main program.
 ******************************************************************************/
 int main(int argc, char* argv[])
 {
-	/*load mesh from ply file*/
-	//FILE* this_file = fopen("../quadmesh_2D/vector_data/saddle.ply", "r");
-	FILE* this_file = fopen("../quadmesh_2D/new_vector_data_2/v3.ply", "r");
+	int input;
 
+	char *str ="../quadmesh_2D/new_vector_data_2/";
+   	char *str_input;
+	
+	printf( "Please enter the number of the PLY:\n");
+	printf( "(1) v1.ply\n(2) v3.ply\n(3) v4.ply\n (4) v5.ply\n (5) v6.ply\n (6) v8.ply\n (7) v9.ply\n (8) v10.ply\n (9) pattern.ply\n ->");
+   	scanf("%d", &input);
+ 
+   	printf( "\nYou entered: %d  ", input);
+   	printf("\n\n");
+
+	if( input == 1){ str_input ="v1.ply";}
+	else if( input == 2){ str_input ="v3.ply";}
+	else if( input == 3){ str_input ="v4.ply";}
+	else if( input == 4){ str_input ="v5.ply";}
+	else if( input == 5){ str_input ="v6.ply";}
+	else if( input == 6){ str_input ="v8.ply";}
+	else if( input == 7){ str_input ="v9.ply";}
+	else if( input == 8){ str_input ="v10.ply";}
+	else if( input == 9){ str_input ="pattern.ply";}
+	else{
+		str_input ="pattern.ply";
+		printf("The number is not from 1 to 9, showing the pattern.ply\n");
+	}
+
+	size_t len = strlen(str)+strlen(str_input);
+
+	char *n_str = new char[len+1];
+   	strcpy(n_str,str);
+   	strcat(n_str,str_input);
+
+	
+	/*load mesh from ply file*/
+	FILE* this_file = fopen( n_str , "r");
 	poly = new Polyhedron(this_file);
 	fclose(this_file);
 	
@@ -272,12 +303,12 @@ void set_view(GLenum mode)
 	GLfloat light_position[3];
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	light_position[0] = 5.5;
-	light_position[1] = 0.0;
+	light_position[0] = 0.0;
+	light_position[1] = 20.0;
 	light_position[2] = 0.0;
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	light_position[0] = -0.1;
-	light_position[1] = 0.0;
+	light_position[1] = 5.0;
 	light_position[2] = 0.0;
 	glLightfv(GL_LIGHT2, GL_POSITION, light_position);
 }
@@ -1192,6 +1223,7 @@ void keyboard(unsigned char key, int x, int y) {
 	
 		printf( "Please enter the number of the Colormap:\n");
 		printf( "(1) RA\n(2) GP\n(3) CW\n(4) GR\n(5) VI\n->");
+		
    		scanf("%d", &input);
  
    		printf( "\nYou entered: %d  ", input);
@@ -1348,6 +1380,7 @@ void display_polyhedron(Polyhedron* poly)
 	break;
 
 	case 5:
+	    glEnable(GL_LIGHTING);
 		displayIBFV();
 		break;
 	}
